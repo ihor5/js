@@ -13,28 +13,40 @@
 //   document.write('You entered wrong value!!!!')
 // }
 
-const number = prompt('Write a number from 0-9');
+// const number = prompt('Write a number from 0-9');
 
-if (number == 1) {
-  document.write('your symbol !');
-} else if (number == 2) {
-  document.write('your symbol @');
-} else if (number == 3) {
-  document.write('your symbol #');
-} else if (number == 4) {
-  document.write('your symbol $');
-} else if (number == 5) {
-  document.write('your symbol %');
-} else if (number == 6) {
-  document.write('your symbol ^');
-} else if (number == 7) {
-  document.write('your symbol &');
-} else if (number == 8) {
-  document.write('your symbol *');
-} else if (number == 9) {
-  document.write('your symbol (');
-} else if (number == 0) {
-  document.write('your symbol )');
+// if (number == 1) {
+//   document.write('your symbol !');
+// } else if (number == 2) {
+//   document.write('your symbol @');
+// } else if (number == 3) {
+//   document.write('your symbol #');
+// } else if (number == 4) {
+//   document.write('your symbol $');
+// } else if (number == 5) {
+//   document.write('your symbol %');
+// } else if (number == 6) {
+//   document.write('your symbol ^');
+// } else if (number == 7) {
+//   document.write('your symbol &');
+// } else if (number == 8) {
+//   document.write('your symbol *');
+// } else if (number == 9) {
+//   document.write('your symbol (');
+// } else if (number == 0) {
+//   document.write('your symbol )');
+// } else {
+//   document.write('You entered wrong value!!!!')
+// }
+
+const newnumber = +prompt('Введите трехзначное число: ');
+
+const number1 = parseInt(newnumber / 100);
+const number2 = parseInt(newnumber / 10) % 10;
+const number3 = newnumber % 10;
+
+if (number1 === number2 || number2 === number3 || number1 === number3) {
+  alert('Найдено совпадение цифр');
 } else {
-  document.write('You entered wrong value!!!!')
+  alert('Совпадений не найдено');
 }
