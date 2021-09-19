@@ -39,16 +39,24 @@
 //   document.write('You entered wrong value!!!!')
 // }
 
-const newnumber = +prompt('Введите трехзначное число: ');
-const number1 = parseInt(newnumber / 100);
-const number2 = parseInt(newnumber / 10) % 10;
-const number3 = newnumber % 10;
-if (number1 >= 0 && number2 >= 0 && number3 >= 0) {
-    if (number1 === number2 || number2 === number3 || number1 === number3) {
-  alert('Найдено совпадение цифр');
-    } else {
-  alert('Совпадений не найдено');
-    }
+// const newnumber = +prompt('Введите трехзначное число: ');
+// const number1 = parseInt(newnumber / 100);
+// const number2 = parseInt(newnumber / 10) % 10;
+// const number3 = newnumber % 10;
+// if (number1 >= 0 && number2 >= 0 && number3 >= 0) {
+//   if (number1 === number2 || number2 === number3 || number1 === number3) {
+//     alert('Найдено совпадение цифр');
+//   } else {
+//     alert('Совпадений не найдено');
+//   }
+// } else {
+//   alert('Не число');
+// }
+
+const writeYear = prompt('напиши год', 'xxxx');
+
+if (writeYear % 400 == 0 || (writeYear % 4 == 0 && writeYear % 100 != 0)) {
+  console.log(`${writeYear} високосный год`);
 } else {
- alert('Не число');
-}
+  console.log(`${writeYear} не високосный год`);
+} 
