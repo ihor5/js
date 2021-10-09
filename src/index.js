@@ -1,7 +1,7 @@
 
 // Вивід результату на екран
 
-function viewResult(nameForm, title, viewResult) {
+function viewResult(nameForm, title, viewResult='') {
   const result = document.querySelector(`.result-form${nameForm}`);
   result.innerHTML = `<div class="inline-box"><h3 class="h-inline">${title}</h3>${viewResult}</div>`;
 }
@@ -10,7 +10,11 @@ function viewResult(nameForm, title, viewResult) {
 
 // Завдання 1
 
-let totalNum = 0;
+function returnNumber(n1, n2) {
+  if (n1 < n2) return -1;
+  else if (n1 > n2) return 1;
+  else return 0;
+}
 
 form1.addEventListener('submit', function(event) {
   event.preventDefault();
@@ -18,286 +22,218 @@ form1.addEventListener('submit', function(event) {
   const num1 = +form1.elements.num1Task1.value;
   const num2 = +form1.elements.num2Task1.value;
 
-  for(let i = num1; i <= num2; i++) {
-      totalNum += i;
-  }
-
-  viewResult(1, 'Сума всіх чисел:', totalNum);
-  totalNum = 0;
+  viewResult(1, returnNumber(num1, num2));
 });
 
 
 // Завдання 2
 
+function factorial(num) {
+  if (num === 0) return 1;
+  else return num * factorial(num - 1);
+}
+
 form2.addEventListener('submit', function(event) {
   event.preventDefault();
 
-  let num1 = +form2.elements.num1Task2.value;
-  let num2 = +form2.elements.num2Task2.value;
+  let num = +form2.elements.numTask2.value;
 
-  while (num1 != 0 && num2 != 0) {
-      if (num1 > num2)
-          num1 %= num2;
-      else
-          num2 %= num1;
-  }
-  // 30 / 18 = 1 (залишок 12)
-  // 18 / 12 = 1 (залишок 6)
-  // 12 / 6 = 2 (залишок 0) 
-  // Найбільше спільне кратне (30, 18) = 6
-
-  const resultNum = num1 + num2;
-
-  viewResult(2, 'Найбільше спільне кратне:', resultNum);
+  viewResult(2, 'Факторіал:', factorial(num));
 });
-
 
 
 
 // Завдання 3
 
-let resultTask3 = [];
+function joinNum(num1, num2, num3) {
+  return num1 + '' + num2 + '' + num3;
+}
 
 form3.addEventListener('submit', function(event) {
   event.preventDefault();
-  const num = +form3.numTask3.value;
+  
+  const num1 = +form3.elements.num1Task3.value;
+  const num2 = +form3.elements.num2Task3.value;
+  const num3 = +form3.elements.num3Task3.value;
 
-  for(let i = 2; i < num; i++) {
-      if (num % i === 0) resultTask3.push(i);
-  }
-
-  const viewResult = document.querySelector('.result-form3');
-  viewResult.innerHTML = '<h3>Всі дільники:</h3>';
-
-  for(let j = 0; j < resultTask3.length; j++) {
-      viewResult.innerHTML += resultTask3[j] + '<br>';
-  }
-
-  resultTask3 = [];
+  viewResult(3, `Об'єднане число:`, joinNum(num1, num2, num3));
 });
 
 
 
 // Завдання 4
 
+function checkSquare(num1 = '', num2 = '') {
+  if (num1 !== 0 && num2 !== 0) return num1 * num2;
+  else if (num1 !== 0) return num1 * num1;
+  else if (num2 !== 0) return num2 * num2;
+  else return 'Введіть хоть одне число.';
+}
+
 form4.addEventListener('submit', function(event) {
   event.preventDefault();
 
-  let num = +form4.elements.numTask4.value;
+  let num1 = +form4.elements.num1Task4.value;
+  let num2 = +form4.elements.num2Task4.value;
 
-  let count = 0;
-  do {
-      num /= 10;
-      count++;
-  }
-  while(num >= 1);
-
-  viewResult(4, 'Кількість цифр:', count);
+  viewResult(4, `Площа прямокутника або квадрата:`, checkSquare(num1, num2));
 });
 
 
 
 // Завдання 5
 
-let positive = 0;
-let negative = 0;
-let zero = 0;
-let even = 0; // Парні
-let odd = 0; // Непарні
+// Перевіряє чи число являється досконалим
+function perfect(num) {
+  let resultArr = [];
+  let result = 0;
+  const startNum = num;
+
+  for(let i = 2; num != 1; i++) {
+      num = startNum / i;
+      if(Number.isInteger(num)) resultArr.push(num);
+  }
+
+  for(let j = 0; j < resultArr.length; j++) {
+      result += resultArr[j];
+  }
+
+  if(startNum === result) return true;
+  else return false;
+}
 
 form5.addEventListener('submit', function(event) {
   event.preventDefault();
-  const nums = form5.numsTask5.value;
-  let arr = nums.split(',');
 
-  // Рахує - позитивні, негативні числа та нулі
-  for(let i = 0; i < arr.length; i++) {
-      if( arr[i] > 0 ) {
-          positive += 1;
-      } else if( arr[i] < 0 ) {
-          negative += 1;
-      } else {
-          zero += 1;
-      }
-  }
+  const num = +form5.elements.numTask5.value;
 
-  // Рахує - парні та непарні числа
-  for(let j = 0; j < arr.length; j++) {
-      // arr[j]%2 == 0 // парне
-      if(arr[j] & 1) {
-          odd += 1; // Непарні
-      } else {
-          even += 1; // Парні
-      }
-  }
 
-  function result (title, result) {
-      return `<div class="inline-box"><h3 class="h-inline">${title}</h3>${result}</div>`;
-  }
-  
-  const viewResult = document.querySelector('.result-form5');
-  viewResult.innerHTML = result('Позитивних:', positive);
-  viewResult.innerHTML += result('Негативних:', negative);
-  viewResult.innerHTML += result('Нулів:', zero);
-  viewResult.innerHTML += result('Парних:', even);
-  viewResult.innerHTML += result('Непарних:', odd);
-  
-  positive = 0; negative = 0; zero = 0; even = 0; odd = 0;
+  const result = document.querySelector('.result-form5');
+  result.innerHTML = `<div class="inline-box"><h3 class="h-inline">Ваше число:</h3><div class="perfect-box"></div></div>`;
+  const perfectBox = document.querySelector('.perfect-box');
+  if(perfect(num)) perfectBox.innerHTML += 'досконале';
+  else perfectBox.innerHTML += 'не досконале';
 });
 
 
 
 // Завдання 6
 
-const buttonTask6 = document.querySelector('#button-task6');
-
-buttonTask6.addEventListener('click', function() {
-  let more = true;
-
-  while (more) {
-      let resultSum = 0;
-
-      let nums = prompt('Введість, що ви хочете порахувати (2 + 2)');
-      let arr = nums.split(' ');
-
-      let num1 = +arr[0];
-      let num2 = +arr[2];
-      let symbol = arr[1];
-
-      if ( symbol === '+') {
-          resultSum = num1 + num2;
-      } else if (symbol === '-') {
-          resultSum = num1 - num2;
-      } else if (symbol === '*') {
-          resultSum = num1 * num2;
-      } else {
-          resultSum = num1 / num2;
+const perfectNums = (startNum, finishNum) => {
+  if(startNum !== 0 && finishNum !== 0) {
+      let result = '';
+      for(let i = startNum; i <= finishNum; i++) {
+          if(perfect(i)) result += `${i} `;
       }
-
-      more = confirm(`Результат: ${resultSum}. Ще?`);
-
-      viewResult(6, 'Результат:', resultSum);
+      return result;
   }
+}
 
+form6.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  let num1 = +form6.elements.num1Task6.value;
+  let num2 = +form6.elements.num2Task6.value;
+
+  const result = document.querySelector('.result-form6');
+  if (perfectNums(num1, num2)) {
+      result.innerHTML = `<div class="inline-box"><h3 class="h-inline">Досконалі числа:</h3><div class="nums-box"></div></div>`;
+      const numsBox = document.querySelector('.nums-box');
+      numsBox.innerHTML += perfectNums(num1, num2);
+  } else {
+      result.innerHTML = `<div class="inline-box"><h3 class="h-inline">Помилка. Введіть числа більше нуля.</h3></div>`;
+  }
 });
 
 
 
 // Завдання 7
 
+// Бере години/хвилини/секунди форматує і повертає
+function getTime(hours = '00', minutes = '00', seconds = '00') {
+  if (hours === 0 || isNaN(hours)) hours = '00';
+  if (minutes === 0 || isNaN(minutes)) minutes = '00';
+  if (seconds === 0 || isNaN(seconds)) seconds = '00';
+  return `${hours} : ${minutes} : ${seconds}`;
+}
+
 form7.addEventListener('submit', function(event) {
   event.preventDefault();
-  const num = form7.elements.num1Task7.value;
-  const count = +form7.elements.num2Task7.value;
+  const num1 = +form7.elements.num1Task7.value;
+  const num2 = +form7.elements.num2Task7.value;
+  const num3 = +form7.elements.num3Task7.value;
 
-  let arr = num.split('');
-  
-  for( let i = 0; i < count; i++ ) arr.push( arr.shift() );
-
-  viewResult(7, 'Результат:', arr.join(''));
+  viewResult(7, 'Ваш час:', getTime(num1, num2, num3));
 });
 
 
 // Завдання 8
 
-const daysWeek = [`Понеділок`, `Вівторок`, `Середа`, `Четвер`, `П'ятниця`, `Субота`, `Неділя`];
-const btnTask8 = document.querySelector('#btn-task8');
+// Переводить години/хвилини/секунди в секунди
+function getSeconds(hours = 0, minutes = 0, seconds = 0) {
+  if (isNaN(hours)) hours = 0;
+  if (isNaN(minutes)) minutes = 0;
+  if (isNaN(seconds)) seconds = 0;
+  return (hours * 3600) + (minutes * 60) + seconds;
+}
 
-btnTask8.addEventListener('click', function() {
-  let more = true;
+form8.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const num1 = +form8.elements.num1Task8.value;
+  const num2 = +form8.elements.num2Task8.value;
+  const num3 = +form8.elements.num3Task8.value;
 
-  let i = 0
-  while( more && i < daysWeek.length) {
-      more = confirm(`${daysWeek[i]}. Ще день?`);
-      if(i === 6) i = -1;
-      i++;
-  }
-
+  viewResult(8, 'Ваш час в секундах:', getSeconds(num1, num2, num3));
 });
 
 
 
 // Завдання 9
 
-const buttonTask9 = document.querySelector('#show-table-btn');
-const closeTableBtn = document.querySelector('#close-table-btn');
-let table = document.querySelector('.table');
+// Переводить секунди в години/хвилини/секунди
+function convertSeconds(secondsInput = 0) {
+  if (isNaN(secondsInput) || secondsInput === 0) {
+      return `Помилка. Введіть час в секундах.`;
+  } else {
+      const seconds = Math.floor(secondsInput % 60);
 
-function showTable() {
+      const minutesTmp = secondsInput / 60;
+      const minutes = Math.floor(minutesTmp % 60);
 
-  table.style.display = 'flex';
+      const hoursTmp = minutesTmp / 60;
+      const hours = Math.floor(hoursTmp % 60);
 
-  for( let i = 2; i <= 9; i++ ) {
-      table.innerHTML += '<div class="table__item table__item' + i + '">';
-      let tableItem = document.querySelector('.table__item' + i);
-
-      for( let j = 1; j <= 10; j++ ) {
-          tableItem.innerHTML += `<div>${i} x ${j} = <strong>${i * j}</strong></div>`;
-      }
-
-      table.innerHTML += `</div>`;
+      return `${hours} : ${minutes} : ${seconds}`;
   }
-
-  buttonTask9.style.display = 'none';
-  closeTableBtn.style.display = 'block';
 }
 
-function closeTable() {
-  table.style.display = 'none';
-  closeTableBtn.style.display = 'none';
-  buttonTask9.style.display = 'block';
+form9.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const num = +form9.elements.numTask9.value;
 
-  table.innerHTML = '';
-}
-
-buttonTask9.addEventListener('click', showTable);
-closeTableBtn.addEventListener('click', closeTable);
+  viewResult(9, 'Ваш час:', convertSeconds(num));
+});
 
 
 
 // Завдання 10
 
-const btnTask10 = document.querySelector('#btn-start');
-const smallBtn = document.querySelector('#btn-small');
-const bigBtn = document.querySelector('#btn-big');
-const bigThis = document.querySelector('#btn-this');
+function differenceTime( h1, m1, s1, h2, m2, s2 ) {
+  const secondsOne = getSeconds(h1, m1, s1);
+  const secondsTwo = getSeconds(h2, m2, s2);
 
-const result = document.querySelector('.result-text-form10');
-const mark = document.querySelector('.mark');
-
-btnTask10.addEventListener('click', function() {
-  result.innerText = res;
-  result.style.display = 'inline-block';
-  mark.style.display = 'inline-block';
-
-  this.style.display = 'none';
-  smallBtn.style.display = 'inline-block';
-  bigBtn.style.display = 'inline-block';
-  bigThis.style.display = 'inline-block';
-});
-
-let low  = 0;
-let high = 100;
-
-let res = Math.floor( (low + high) / 2 );
-  
-function searchNum() {
-  return Math.floor( (low + high) / 2 );
+  const seconds = Math.abs(secondsOne - secondsTwo);
+  return convertSeconds(seconds);
 }
-  
-smallBtn.addEventListener('click', function() {
-  high = Number(result.innerText);
-  result.innerText = searchNum();  
-});
-  
-bigBtn.addEventListener('click', function() {
-  low = Number(result.innerText);    
-  result.innerText = searchNum();  
-});
 
-bigThis.addEventListener('click', function() {   
-  result.innerHTML = 'I Win! I Win! 🎉 🎉';
-  mark.style.display = 'none';
-  smallBtn.style.display = 'none';
-  bigBtn.style.display = 'none';
+form10.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const num1 = +form10.num1Task10.value;
+  const num2 = +form10.num2Task10.value;
+  const num3 = +form10.num3Task10.value;
+  const num4 = +form10.num4Task10.value;
+  const num5 = +form10.num5Task10.value;
+  const num6 = +form10.num6Task10.value;    
+
+  viewResult(10, 'Різниця в часі:', differenceTime(num1,num2,num3,num4,num5,num6));
 });
