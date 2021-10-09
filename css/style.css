@@ -23,7 +23,7 @@ html {
 }
 
 body {
-    background-color: rgb(37, 15, 78);
+    background-color: rgb(30, 173, 42);
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -35,7 +35,7 @@ h1 {
     font-family: 'Roboto', sans-serif;
     font-size: 40px;
     font-weight: 900;
-    color: rgb(155, 13, 13);
+    color: rgb(219, 25, 145);
     text-align: center;
     margin: 40px 0 50px;
 }
