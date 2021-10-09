@@ -1,175 +1,221 @@
 
-// Вивід результату на екран
+// Task 1
+// Task 1.1 - Функция для вывода на экран информации об автомобиле
+// Task 1.2 - Функция для подсчета необходимого времени для преодоления переданного расстояния со средней скоростью.
 
-function viewResult(nameForm, title, viewResult='') {
-  const result = document.querySelector(`.result-form${nameForm}`);
-  result.innerHTML = `<div class="inline-box"><h3 class="h-inline">${title}</h3>${viewResult}</div>`;
-}
+const car = {
+  brand: 'Lamborghini',
+  model: 'Urus',
+  year: 2020,
+  mSpeed: 178,
+  showCarInfo: function() {
+      return `<div class="inline-box"><h3 class="h-inline">Марка:</h3> ${this.brand}<br>
+              <h3 class="h-inline">Модель:</h3> ${this.model}<br>
+              <h3 class="h-inline">Рік:</h3> ${this.year}<br>
+              <h3 class="h-inline">Середня швидкість:</h3> ${this.mSpeed} км/год.</div>`;
+  },
+  calcMSpeed: function(distance) {
+      let countBreak = 0;
+      const time = distance / this.mSpeed;
+      let secondsInput =  time * 60 * 60;
+      
+      if (time > 4) {
+          countBreak = Math.floor(time / 4);
+          secondsInput += 3600 * countBreak;
+      }
+
+      let seconds = Math.floor(secondsInput % 60);
+      const minutesTmp = secondsInput / 60;
+      let minutes = Math.floor(minutesTmp % 60);
+      const hoursTmp = minutesTmp / 60;
+      let hours = Math.floor(hoursTmp % 60);
+
+      if (seconds === 0) seconds = '00';
+      if (minutes === 0) minutes = '00';
+      if (hours === 0) hours = '00';
+
+      return `<div class="inline-box"><h3 class="h-inline">${hours}:${minutes}:${seconds}</h3> потрібно,
+              щоб подолати <h3 class="h-inline">${distance} км</h3> з середньою швидкість <h3 class="h-inline">
+              ${car.mSpeed} км/год.</h3> Буде зупинок <h3 class="h-inline">${countBreak}</h3> по 1 годині.</div>`;
+  }
+};
 
 
+// Task 1.1
 
-// Завдання 1
+const showCarInfo = document.querySelector('.btn-show-car-info');
+const hideCarInfo = document.querySelector('.btn-hide-car-info');
+const result = document.querySelector('.result-form1');
 
-function returnNumber(n1, n2) {
-  if (n1 < n2) return -1;
-  else if (n1 > n2) return 1;
-  else return 0;
-}
+showCarInfo.addEventListener('click', function() {
+  result.innerHTML = car.showCarInfo();
+  showCarInfo.style.display = 'none';
+  hideCarInfo.style.display = 'block';
+});
+
+hideCarInfo.addEventListener('click', function() {
+  result.innerHTML = '';
+  showCarInfo.style.display = 'block';
+  hideCarInfo.style.display = 'none';
+});
+
+
+// Task 1.2
 
 form1.addEventListener('submit', function(event) {
   event.preventDefault();
 
-  const num1 = +form1.elements.num1Task1.value;
-  const num2 = +form1.elements.num2Task1.value;
+  const km = +form1.km.value;
 
-  viewResult(1, returnNumber(num1, num2));
-});
-
-
-// Завдання 2
-
-function factorial(num) {
-  if (num === 0) return 1;
-  else return num * factorial(num - 1);
-}
-
-form2.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  let num = +form2.elements.numTask2.value;
-
-  viewResult(2, 'Факторіал:', factorial(num));
+  const result = document.querySelector('.result-form1-2');
+  result.innerHTML = car.calcMSpeed(km);
 });
 
 
 
-// Завдання 3
-
-function joinNum(num1, num2, num3) {
-  return num1 + '' + num2 + '' + num3;
-}
-
-form3.addEventListener('submit', function(event) {
-  event.preventDefault();
-  
-  const num1 = +form3.elements.num1Task3.value;
-  const num2 = +form3.elements.num2Task3.value;
-  const num3 = +form3.elements.num3Task3.value;
-
-  viewResult(3, `Об'єднане число:`, joinNum(num1, num2, num3));
-});
 
 
+// Task 2 - Создать объект, хранящий в себе отдельно числитель и знаменатель дроби, и следующие функции для работы с этим объектом:
+// Task 2.1 - Функция сложения 2-х объектов-дробей;
+// Task 2.2 - Функция вычитания 2-х объектов-дробей;
+// Task 2.3 - Функция умножения 2-х объектов-дробей;
+// Task 2.4 - Функция деления 2-х объектов-дробей;
+// Task 2.5 - Функция сокращения объекта-дроби.
 
-// Завдання 4
+const fractions = {
+  fr1: {
+      numer: 5,
+      denom: 2
+  },
+  fr2: {
+      numer: 3,
+      denom: 4
+  },
+  calcFr: function(sym) {
+      const resFr1Numer = this.fr1.numer * this.fr2.denom;
+      const resFr1Denom = this.fr1.denom * this.fr2.denom;
+      const resFr2Numer = this.fr2.numer * this.fr1.denom;
 
-function checkSquare(num1 = '', num2 = '') {
-  if (num1 !== 0 && num2 !== 0) return num1 * num2;
-  else if (num1 !== 0) return num1 * num1;
-  else if (num2 !== 0) return num2 * num2;
-  else return 'Введіть хоть одне число.';
-}
+      let numer = 0;
+      if(sym == '+') numer = resFr1Numer + resFr2Numer;
+      else numer = resFr1Numer - resFr2Numer;
 
-form4.addEventListener('submit', function(event) {
-  event.preventDefault();
+      return numer + '/' + resFr1Denom;
+  },
+  addition: function() {
+      return this.calcFr('+');
+  },
+  subtraction: function() {
+      return this.calcFr('-');
+  },
+  multi: function() {
+      const numer = this.fr1.numer * this.fr2.numer;
+      const denom = this.fr1.denom * this.fr2.denom;
 
-  let num1 = +form4.elements.num1Task4.value;
-  let num2 = +form4.elements.num2Task4.value;
+      return numer + '/' + denom;
+  },
+  divide: function() {
+      const numer = this.fr1.numer * this.fr2.denom;
+      const denom = this.fr1.denom * this.fr2.numer;
 
-  viewResult(4, `Площа прямокутника або квадрата:`, checkSquare(num1, num2));
-});
+      return numer + '/' + denom;
+  },
+  abbr: function(n, d) {
+      let arr1 = [];
+      let arr2 = [];
+      let divide = [];
 
+      let numer = n;
+      let denom = d;
 
-
-// Завдання 5
-
-// Перевіряє чи число являється досконалим
-function perfect(num) {
-  let resultArr = [];
-  let result = 0;
-  const startNum = num;
-
-  for(let i = 2; num != 1; i++) {
-      num = startNum / i;
-      if(Number.isInteger(num)) resultArr.push(num);
-  }
-
-  for(let j = 0; j < resultArr.length; j++) {
-      result += resultArr[j];
-  }
-
-  if(startNum === result) return true;
-  else return false;
-}
-
-form5.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  const num = +form5.elements.numTask5.value;
-
-
-  const result = document.querySelector('.result-form5');
-  result.innerHTML = `<div class="inline-box"><h3 class="h-inline">Ваше число:</h3><div class="perfect-box"></div></div>`;
-  const perfectBox = document.querySelector('.perfect-box');
-  if(perfect(num)) perfectBox.innerHTML += 'досконале';
-  else perfectBox.innerHTML += 'не досконале';
-});
-
-
-
-// Завдання 6
-
-const perfectNums = (startNum, finishNum) => {
-  if(startNum !== 0 && finishNum !== 0) {
-      let result = '';
-      for(let i = startNum; i <= finishNum; i++) {
-          if(perfect(i)) result += `${i} `;
+      for(let i = 2; i < n; i++) {
+          if (n % i === 0) arr1.push(i);
       }
-      return result;
+      for(let i = 2; i < d; i++) {
+          if (d % i === 0) arr2.push(i);
+      }
+
+      if(arr1.length > arr2.length) {
+          for(let i = 0; i < arr1.length; i++) {
+              if(arr1[i] === arr2[i]) divide.push(arr1[i]);
+          }
+      } else {
+          for(let i = 0; i < arr2.length; i++) {
+              if(arr1[i] === arr2[i]) divide.push(arr1[i]);
+          }
+      }
+
+      if (divide.length != 0) {
+          const maxDevide = Math.max(divide);
+          numer = n / maxDevide;
+          denom = d / maxDevide;
+      }
+
+      return numer + '/' + denom;
   }
 }
 
-form6.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  let num1 = +form6.elements.num1Task6.value;
-  let num2 = +form6.elements.num2Task6.value;
-
-  const result = document.querySelector('.result-form6');
-  if (perfectNums(num1, num2)) {
-      result.innerHTML = `<div class="inline-box"><h3 class="h-inline">Досконалі числа:</h3><div class="nums-box"></div></div>`;
-      const numsBox = document.querySelector('.nums-box');
-      numsBox.innerHTML += perfectNums(num1, num2);
+// Виводить результати дробів
+function resultFr(task, fn, sym='+', def=true) {
+  const res = document.querySelector(`.result-form2${task}`);
+  if(def) {
+      res.innerHTML = `<p>${fractions.fr1.numer}/${fractions.fr1.denom} ${sym} ${fractions.fr2.numer}/${fractions.fr2.denom} = <strong>${fn}</strong></p><br>`;
   } else {
-      result.innerHTML = `<div class="inline-box"><h3 class="h-inline">Помилка. Введіть числа більше нуля.</h3></div>`;
+      res.innerHTML = `<p>26/8 = <strong>${fn}</strong></p><br>`;
   }
-});
-
-
-
-// Завдання 7
-
-// Бере години/хвилини/секунди форматує і повертає
-function getTime(hours = '00', minutes = '00', seconds = '00') {
-  if (hours === 0 || isNaN(hours)) hours = '00';
-  if (minutes === 0 || isNaN(minutes)) minutes = '00';
-  if (seconds === 0 || isNaN(seconds)) seconds = '00';
-  return `${hours} : ${minutes} : ${seconds}`;
 }
 
-form7.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const num1 = +form7.elements.num1Task7.value;
-  const num2 = +form7.elements.num2Task7.value;
-  const num3 = +form7.elements.num3Task7.value;
+// Task 2.1
+resultFr(1, fractions.addition());
 
-  viewResult(7, 'Ваш час:', getTime(num1, num2, num3));
-});
+// Task 2.2
+resultFr(2, fractions.subtraction(), '-');
+
+// Task 2.3
+resultFr(3, fractions.multi(), '*');
+
+// Task 2.4
+resultFr(4, fractions.divide(), ':');
+
+// Task 2.5
+resultFr(5, fractions.abbr(26,8), '', false);
 
 
-// Завдання 8
 
-// Переводить години/хвилини/секунди в секунди
+
+
+// Task 3 - Создать объект, описывающий время (часы, минуты, секунды), и следующие функции для работы с этим объектом: 
+// Task 3.1 - Функция вывода времени на экран;
+// Task 3.2 - Функция изменения времени на переданное количество секунд;
+// Task 3.3 - Функция изменения времени на переданное количество минут;
+// Task 3.4 - Функция изменения времени на переданное количество часов.
+
+const time = {
+  hours: 17,
+  minutes: 23,
+  seconds: 14,
+  showTime: function() {
+      return `${this.hours}:${this.minutes}:${this.seconds}`;
+  },
+  calcTime: function(seconds) {
+      const secondsTime = getSeconds(this.hours, this.minutes, this.seconds);
+      const finalTime = convertSeconds(seconds + secondsTime);
+      return finalTime;
+  },
+  changeTimeSeconds: function(seconds) {
+      return this.calcTime(seconds);
+  },
+  changeTimeMinutes: function(minutes) {
+      const seconds = minutes * 60;
+      return  this.calcTime(seconds);
+  },
+  changeTimeHours: function(hours) {
+      const seconds = hours * 60 * 60;
+      return  this.calcTime(seconds);
+  }
+};
+
+// Переводить час в секунди. Функція з попередньої домашки.
 function getSeconds(hours = 0, minutes = 0, seconds = 0) {
   if (isNaN(hours)) hours = 0;
   if (isNaN(minutes)) minutes = 0;
@@ -177,29 +223,14 @@ function getSeconds(hours = 0, minutes = 0, seconds = 0) {
   return (hours * 3600) + (minutes * 60) + seconds;
 }
 
-form8.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const num1 = +form8.elements.num1Task8.value;
-  const num2 = +form8.elements.num2Task8.value;
-  const num3 = +form8.elements.num3Task8.value;
-
-  viewResult(8, 'Ваш час в секундах:', getSeconds(num1, num2, num3));
-});
-
-
-
-// Завдання 9
-
-// Переводить секунди в години/хвилини/секунди
+// Переводить секунди в години/хвилини/секунди. Функція з попередньої домашки.
 function convertSeconds(secondsInput = 0) {
   if (isNaN(secondsInput) || secondsInput === 0) {
       return `Помилка. Введіть час в секундах.`;
   } else {
       const seconds = Math.floor(secondsInput % 60);
-
       const minutesTmp = secondsInput / 60;
       const minutes = Math.floor(minutesTmp % 60);
-
       const hoursTmp = minutesTmp / 60;
       const hours = Math.floor(hoursTmp % 60);
 
@@ -207,33 +238,56 @@ function convertSeconds(secondsInput = 0) {
   }
 }
 
-form9.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const num = +form9.elements.numTask9.value;
+// Вивід результату
+function resultVw(task, fn, def=true) {
+  const result = document.querySelector(`.result-form${task}`);
+  if(def) {
+      result.innerHTML = `<div class="inline-box"><h3 class="h-inline">${fn}</h3></div>`;
+  } else {
+      result.innerHTML = `${fn}`;
+  }
+}
 
-  viewResult(9, 'Ваш час:', convertSeconds(num));
+// Task 3.1
+
+const showTime = document.querySelector('.btn-show-time');
+const hideTime = document.querySelector('.btn-hide-time');
+
+showTime.addEventListener('click', function() {
+  resultVw('3', time.showTime());
+  showTime.style.display = 'none';
+  hideTime.style.display = 'block';
+});
+
+hideTime.addEventListener('click', function() {
+  resultVw('3', '', false);
+  showTime.style.display = 'block';
+  hideTime.style.display = 'none';
 });
 
 
+// Task 3.2
 
-// Завдання 10
-
-function differenceTime( h1, m1, s1, h2, m2, s2 ) {
-  const secondsOne = getSeconds(h1, m1, s1);
-  const secondsTwo = getSeconds(h2, m2, s2);
-
-  const seconds = Math.abs(secondsOne - secondsTwo);
-  return convertSeconds(seconds);
-}
-
-form10.addEventListener('submit', function(event) {
+form32.addEventListener('submit', function(event) {
   event.preventDefault();
-  const num1 = +form10.num1Task10.value;
-  const num2 = +form10.num2Task10.value;
-  const num3 = +form10.num3Task10.value;
-  const num4 = +form10.num4Task10.value;
-  const num5 = +form10.num5Task10.value;
-  const num6 = +form10.num6Task10.value;    
+  const seconds = +form32.seconds.value;
+  resultVw('3-2', time.changeTimeSeconds(seconds));
+});
 
-  viewResult(10, 'Різниця в часі:', differenceTime(num1,num2,num3,num4,num5,num6));
+
+// Task 3.3
+
+form33.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const minutes = +form33.minutes.value;
+  resultVw('3-3', time.changeTimeMinutes(minutes));
+});
+
+
+// Task 3.4
+
+form34.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const hours = +form34.hours.value;
+  resultVw('3-4', time.changeTimeHours(hours));
 });
