@@ -18,12 +18,12 @@ html {
 }
 
 ::selection {
-    background-color: rgb(143, 75, 221);
+    background-color: rgb(182, 194, 23);
     color: #fff;
 }
 
 body {
-    background-color: rgb(202, 238, 0);
+    background-color: rgb(37, 15, 78);
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -35,7 +35,7 @@ h1 {
     font-family: 'Roboto', sans-serif;
     font-size: 40px;
     font-weight: 900;
-    color: #333;
+    color: rgb(155, 13, 13);
     text-align: center;
     margin: 40px 0 50px;
 }

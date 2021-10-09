@@ -1,293 +1,450 @@
 
-// Task 1
-// Task 1.1 - Функция для вывода на экран информации об автомобиле
-// Task 1.2 - Функция для подсчета необходимого времени для преодоления переданного расстояния со средней скоростью.
+// Вивід результату
+function resultVw(task, fn) {
+  const result = document.querySelector(`.result-form${task}`);
+  result.innerHTML = `<div class="inline-box">${fn}</div>`;
+}
 
-const car = {
-  brand: 'Lamborghini',
-  model: 'Urus',
-  year: 2020,
-  mSpeed: 178,
-  showCarInfo: function() {
-      return `<div class="inline-box"><h3 class="h-inline">Марка:</h3> ${this.brand}<br>
-              <h3 class="h-inline">Модель:</h3> ${this.model}<br>
-              <h3 class="h-inline">Рік:</h3> ${this.year}<br>
-              <h3 class="h-inline">Середня швидкість:</h3> ${this.mSpeed} км/год.</div>`;
+// Оновлює список
+function updateList(fn) {
+  result.innerHTML = `<div class="inline-box">${fn}</div>`;
+}
+
+
+
+// Task 1. Создать массив «Список покупок». Каждый элемент массива является
+// объектом, который содержит название продукта, необходимое количество
+// и куплен или нет.
+
+const shoppingList = [
+  {
+      name: 'Apples',
+      quantity: 10,
+      buy: 1
   },
-  calcMSpeed: function(distance) {
-      let countBreak = 0;
-      const time = distance / this.mSpeed;
-      let secondsInput =  time * 60 * 60;
-      
-      if (time > 4) {
-          countBreak = Math.floor(time / 4);
-          secondsInput += 3600 * countBreak;
-      }
+  {
+      name: 'Pears',
+      quantity: 3,
+      buy: 0
+  },
+  {
+      name: 'Avocado',
+      quantity: 2,
+      buy: 1
+  },
+  {
+      name: 'Milk',
+      quantity: 1,
+      buy: 0
+  },
+  {
+      name: 'Bread',
+      quantity: 2,
+      buy: 1
+  },
+  {
+      name: 'Lime',
+      quantity: 4,
+      buy: 0
+  },
+];
 
-      let seconds = Math.floor(secondsInput % 60);
-      const minutesTmp = secondsInput / 60;
-      let minutes = Math.floor(minutesTmp % 60);
-      const hoursTmp = minutesTmp / 60;
-      let hours = Math.floor(hoursTmp % 60);
 
-      if (seconds === 0) seconds = '00';
-      if (minutes === 0) minutes = '00';
-      if (hours === 0) hours = '00';
 
-      return `<div class="inline-box"><h3 class="h-inline">${hours}:${minutes}:${seconds}</h3> потрібно,
-              щоб подолати <h3 class="h-inline">${distance} км</h3> з середньою швидкість <h3 class="h-inline">
-              ${car.mSpeed} км/год.</h3> Буде зупинок <h3 class="h-inline">${countBreak}</h3> по 1 годині.</div>`;
+// Task 1.1 Вывод всего списка на экран таким образом, чтобы сначала шли
+// некупленные продукты, а потом – купленные.
+
+// Сортування по тому чи продукт зі списку куплено. Зверху ті, що ще не куплені.
+shoppingList.sort((a, b) => {
+  return a.buy - b.buy;
+});
+
+// Показ списку
+function showList(list) {
+  let result = '';
+  let buy = ''
+  for (let item of list) {
+      if(item.buy === 1) buy = 'buy';
+      else buy = '';
+      result += `<span class="${buy}"><h3 class="h-inline">${item.name}</h3> (${item.quantity} шт.)</span><br><br>`;
   }
-};
+  return result;
+}
 
-
-// Task 1.1
-
-const showCarInfo = document.querySelector('.btn-show-car-info');
-const hideCarInfo = document.querySelector('.btn-hide-car-info');
+const btnShowList = document.querySelector('.btn-show-list');
+const btnHideList = document.querySelector('.btn-hide-list');
 const result = document.querySelector('.result-form1');
 
-showCarInfo.addEventListener('click', function() {
-  result.innerHTML = car.showCarInfo();
-  showCarInfo.style.display = 'none';
-  hideCarInfo.style.display = 'block';
+btnShowList.addEventListener('click', function() {
+  updateList(showList(shoppingList));
+  btnShowList.style.display = 'none';
+  btnHideList.style.display = 'block';
 });
 
-hideCarInfo.addEventListener('click', function() {
+btnHideList.addEventListener('click', function() {
   result.innerHTML = '';
-  showCarInfo.style.display = 'block';
-  hideCarInfo.style.display = 'none';
+  btnShowList.style.display = 'block';
+  btnHideList.style.display = 'none';
 });
 
 
-// Task 1.2
 
-form1.addEventListener('submit', function(event) {
+// Task 1.2 Добавление покупки в список. Учтите, что при добавлении покупки
+// с уже существующим в списке продуктом, необходимо увеличивать количество
+// в существующей покупке, а не добавлять новую.
+
+// Може існує якийсь ефективніший спосіб ніж провіряти значення об'єкта?
+function addItem(name, quantity = 1, buy = 0) {
+  // for (let list of shoppingList) {
+  //     if(list.name === name) {
+  //         return list.quantity += quantity;
+  //     }
+  // }
+
+  // return shoppingList.push({
+  //     name,
+  //     quantity,
+  //     buy
+  // });
+  
+  const item = shoppingList.find(item => item.name === name);
+  if(item) return item.quantity += quantity;
+
+  return shoppingList.push({
+      name,
+      quantity,
+      buy
+  });
+}
+
+form12.addEventListener('submit', function(event) {
   event.preventDefault();
+  
+  // Як краще називати імена в html? бо тут дефіс не працює.
+  const itemName = form12.itemName.value;
+  const itemQt = +form12.itemQt.value;
+  
+  addItem(itemName, itemQt);
+  resultVw('1-2', 'Ваш продукт додано в список. Результат в 1.1');
 
-  const km = +form1.km.value;
+  // Це нормальний спосіб оновити список?
+  updateList(showList(shoppingList));
+});
 
-  const result = document.querySelector('.result-form1-2');
-  result.innerHTML = car.calcMSpeed(km);
+
+
+// Task 1.3 Покупка продукта. Функция принимает название продукта и отмечает
+// его как купленный.
+
+// Провірка чи існує продукт і міняє його статус
+function checkBuy(name) {
+  // for (let list of shoppingList) {
+  //     if(list.name === name && list.buy === 0) {
+  //         return list.buy = 1;
+  //     }
+  // }
+  shoppingList.find(item => {
+      if (item.name === name && item.buy === 0)
+          return item.buy = 1;
+  });
+
+}
+
+form13.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const itemName = form13.itemName.value;
+  
+  checkBuy(itemName);
+
+  resultVw('1-3', 'Ваш продукт викреслено зі списку. Результат в 1.1');
+  updateList(showList(shoppingList));
 });
 
 
 
 
 
-// Task 2 - Создать объект, хранящий в себе отдельно числитель и знаменатель дроби, и следующие функции для работы с этим объектом:
-// Task 2.1 - Функция сложения 2-х объектов-дробей;
-// Task 2.2 - Функция вычитания 2-х объектов-дробей;
-// Task 2.3 - Функция умножения 2-х объектов-дробей;
-// Task 2.4 - Функция деления 2-х объектов-дробей;
-// Task 2.5 - Функция сокращения объекта-дроби.
+// Task 2. Создать массив, описывающий чек в магазине.
+// Каждый элемент массива состоит из названия товара,
+// количества и цены за единицу товара.
 
-const fractions = {
-  fr1: {
-      numer: 5,
-      denom: 2
+const check = [
+  {
+      name: 'Coffee',
+      qt: 4,
+      price: 5 
   },
-  fr2: {
-      numer: 3,
-      denom: 4
+  {
+      name: 'Wine',
+      qt: 3,
+      price: 15 
   },
-  calcFr: function(sym) {
-      const resFr1Numer = this.fr1.numer * this.fr2.denom;
-      const resFr1Denom = this.fr1.denom * this.fr2.denom;
-      const resFr2Numer = this.fr2.numer * this.fr1.denom;
-
-      let numer = 0;
-      if(sym == '+') numer = resFr1Numer + resFr2Numer;
-      else numer = resFr1Numer - resFr2Numer;
-
-      return numer + '/' + resFr1Denom;
+  {
+      name: 'Headphones',
+      qt: 1,
+      price: 50 
   },
-  addition: function() {
-      return this.calcFr('+');
+  {
+      name: 'USB Cable',
+      qt: 2,
+      price: 7 
   },
-  subtraction: function() {
-      return this.calcFr('-');
+  {
+      name: 'Box of sweets',
+      qt: 3,
+      price: 6 
   },
-  multi: function() {
-      const numer = this.fr1.numer * this.fr2.numer;
-      const denom = this.fr1.denom * this.fr2.denom;
-
-      return numer + '/' + denom;
+  {
+      name: 'Chocolate bar',
+      qt: 7,
+      price: 3 
   },
-  divide: function() {
-      const numer = this.fr1.numer * this.fr2.denom;
-      const denom = this.fr1.denom * this.fr2.numer;
+];
 
-      return numer + '/' + denom;
-  },
-  abbr: function(n, d) {
-      let arr1 = [];
-      let arr2 = [];
-      let divide = [];
 
-      let numer = n;
-      let denom = d;
 
-      for(let i = 2; i < n; i++) {
-          if (n % i === 0) arr1.push(i);
-      }
-      for(let i = 2; i < d; i++) {
-          if (d % i === 0) arr2.push(i);
-      }
+// Task 2.1 Распечатка чека на экран;
 
-      if(arr1.length > arr2.length) {
-          for(let i = 0; i < arr1.length; i++) {
-              if(arr1[i] === arr2[i]) divide.push(arr1[i]);
-          }
-      } else {
-          for(let i = 0; i < arr2.length; i++) {
-              if(arr1[i] === arr2[i]) divide.push(arr1[i]);
-          }
-      }
-
-      if (divide.length != 0) {
-          const maxDevide = Math.max(divide);
-          numer = n / maxDevide;
-          denom = d / maxDevide;
-      }
-
-      return numer + '/' + denom;
+// Показ чеку
+function showCheck(check) {
+  let result = '';
+  for (let item of check) {
+      result += `<h3 class="h-inline">${item.name}</h3>(${item.qt}шт.)&nbsp;&nbsp;$${item.price}<br><br>`;
   }
-}
-
-// Виводить результати дробів
-function resultFr(task, fn, sym='+', def=true) {
-  const res = document.querySelector(`.result-form2${task}`);
-  if(def) {
-      res.innerHTML = `<p>${fractions.fr1.numer}/${fractions.fr1.denom} ${sym} ${fractions.fr2.numer}/${fractions.fr2.denom} = <strong>${fn}</strong></p><br>`;
-  } else {
-      res.innerHTML = `<p>26/8 = <strong>${fn}</strong></p><br>`;
-  }
-}
-
-// Task 2.1
-resultFr(1, fractions.addition());
-
-// Task 2.2
-resultFr(2, fractions.subtraction(), '-');
-
-// Task 2.3
-resultFr(3, fractions.multi(), '*');
-
-// Task 2.4
-resultFr(4, fractions.divide(), ':');
-
-// Task 2.5
-resultFr(5, fractions.abbr(26,8), '', false);
-
-
-
-
-
-// Task 3 - Создать объект, описывающий время (часы, минуты, секунды), и следующие функции для работы с этим объектом: 
-// Task 3.1 - Функция вывода времени на экран;
-// Task 3.2 - Функция изменения времени на переданное количество секунд;
-// Task 3.3 - Функция изменения времени на переданное количество минут;
-// Task 3.4 - Функция изменения времени на переданное количество часов.
-
-const time = {
-  hours: 17,
-  minutes: 23,
-  seconds: 14,
-  showTime: function() {
-      return `${this.hours}:${this.minutes}:${this.seconds}`;
-  },
-  calcTime: function(seconds) {
-      const secondsTime = getSeconds(this.hours, this.minutes, this.seconds);
-      const finalTime = convertSeconds(seconds + secondsTime);
-      return finalTime;
-  },
-  changeTimeSeconds: function(seconds) {
-      return this.calcTime(seconds);
-  },
-  changeTimeMinutes: function(minutes) {
-      const seconds = minutes * 60;
-      return  this.calcTime(seconds);
-  },
-  changeTimeHours: function(hours) {
-      const seconds = hours * 60 * 60;
-      return  this.calcTime(seconds);
-  }
+  result += `<hr>`;
+  result += `<h3 style="text-align: right;">Загальна сума $${calcSum(check)}</h3>`;
+  result += `<br>Сама дорога покупка в чеку: <h3 class="h-inline">${maxItem(check)}</h3>`;
+  result += `<br>Середня ціна одного товару в чеку: <h3 class="h-inline">$${calcSum(check) / check.length}</h3>`;
+  return result;
 };
 
-// Переводить час в секунди. Функція з попередньої домашки.
-function getSeconds(hours = 0, minutes = 0, seconds = 0) {
-  if (isNaN(hours)) hours = 0;
-  if (isNaN(minutes)) minutes = 0;
-  if (isNaN(seconds)) seconds = 0;
-  return (hours * 3600) + (minutes * 60) + seconds;
-}
+resultVw('2-1', showCheck(check));
 
-// Переводить секунди в години/хвилини/секунди. Функція з попередньої домашки.
-function convertSeconds(secondsInput = 0) {
-  if (isNaN(secondsInput) || secondsInput === 0) {
-      return `Помилка. Введіть час в секундах.`;
-  } else {
-      const seconds = Math.floor(secondsInput % 60);
-      const minutesTmp = secondsInput / 60;
-      const minutes = Math.floor(minutesTmp % 60);
-      const hoursTmp = minutesTmp / 60;
-      const hours = Math.floor(hoursTmp % 60);
 
-      return `${hours} : ${minutes} : ${seconds}`;
+
+// Task 2.2 Подсчет общей суммы покупки;
+
+function calcSum(list) {
+  let total = 0;
+  for (let item of list) {
+      total += item.price * item.qt;
   }
+  return total;
 }
 
-// Вивід результату
-function resultVw(task, fn, def=true) {
-  const result = document.querySelector(`.result-form${task}`);
-  if(def) {
-      result.innerHTML = `<div class="inline-box"><h3 class="h-inline">${fn}</h3></div>`;
-  } else {
-      result.innerHTML = `${fn}`;
+
+
+// Task 2.3 Получение самой дорогой покупки в чеке;
+
+// Це точно не найефективніший спосіб це робити.
+// function maxItem(list) {
+//     let arr = [];
+//     for (item of list) {
+//         arr.push(item.price * item.qt);
+//     }
+//     const maxPrice = Math.max.apply(null, arr);
+  
+//     for (item of list) {
+//         if(maxPrice / item.qt === item.price)
+//             return `${item.name} $${item.price}`;
+//     }
+// }
+
+function maxItem(list) {
+  let arr = [];
+  for (item of list) {
+      arr.push(item.price * item.qt);
   }
+
+  arr.sort((a, b) => a - b).reverse();
+  
+  for (item of list) {
+      if(arr[0] / item.qt === item.price)
+          return `${item.name} $${item.price}`;
+  } 
 }
 
-// Task 3.1
 
-const showTime = document.querySelector('.btn-show-time');
-const hideTime = document.querySelector('.btn-hide-time');
+// Task 2.4 Подсчет средней стоимости одного товара в чеке.
 
-showTime.addEventListener('click', function() {
-  resultVw('3', time.showTime());
-  showTime.style.display = 'none';
-  hideTime.style.display = 'block';
-});
-
-hideTime.addEventListener('click', function() {
-  resultVw('3', '', false);
-  showTime.style.display = 'block';
-  hideTime.style.display = 'none';
-});
+// Зроблено в завданні 2.1
 
 
-// Task 3.2
 
-form32.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const seconds = +form32.seconds.value;
-  resultVw('3-2', time.changeTimeSeconds(seconds));
-});
+// Task 3. Создать массив CSS-стилей (цвет, размер шрифта,
+// выравнивание, подчеркивание и т. д.). Каждый элемент массива – это
+// объект, состоящий из двух свойств: название стиля и значение стиля.
+// Написать функцию, которая принимает массив стилей и текст, и
+// выводит этот текст с помощью document.write() в тегах <p></p>,
+// добавив в открывающий тег атрибут style со всеми стилями,
+// перечисленными в массиве.
+
+const cssStyle = [
+  {
+      name: 'color',
+      value: 'PaleVioletRed'
+  },
+  {
+      name: 'font-size',
+      value: '24px'
+  },
+  {
+      name: 'text-align',
+      value: 'right'
+  },
+  {
+      name: 'colortext-decoration',
+      value: 'underline'
+  },
+];
+
+const showStyle = (arr, text) => {
+  let style = '';
+
+  for (item of arr) {
+      style += `${item.name}: ${item.value}; `;
+  }
+  return `<p style="${style}">${text}</p>`;
+}
+
+resultVw(3, showStyle(cssStyle, '"The way to get started is to quit talking and begin doing." -Walt Disney'));
 
 
-// Task 3.3
 
-form33.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const minutes = +form33.minutes.value;
-  resultVw('3-3', time.changeTimeMinutes(minutes));
-});
+// Task 4. Создать массив аудиторий академии. Объект-аудитория
+// состоит из названия, количества посадочных мест (от 10 до 20)
+// и названия факультета, для которого она предназначена. 
+
+const lectureHalls = [
+  {
+      name: 'Medium Hall',
+      numberSeats: 17,
+      faculty: 'Finance'
+  },
+  {
+      name: 'Big Hall',
+      numberSeats: 20,
+      faculty: 'Marketing'
+  },
+  {
+      name: 'Market Hall',
+      numberSeats: 16,
+      faculty: 'Marketing'
+  },
+  {
+      name: 'Tiny Hall',
+      numberSeats: 13,
+      faculty: 'Computer Science'
+  },
+  {
+      name: 'Small Hall',
+      numberSeats: 10,
+      faculty: 'Design'
+  },
+];
 
 
-// Task 3.4
+// Вивід результату аудиторій
+function resultHall(name, numberSeats, faculty='') {
+  if (faculty !== '')
+      return `<h3 class="h-inline">${name}</h3> (${numberSeats} місць.) Факультет: ${faculty}<br><br>`;
+  else
+      return `<h3 class="h-inline">${name}</h3> (${numberSeats} місць.)<br><br>`;
+}
 
-form34.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const hours = +form34.hours.value;
-  resultVw('3-4', time.changeTimeHours(hours));
-});
+
+
+// Task 4.1 Вывод на экран всех аудиторий;
+
+function showHalls(halls) {
+  let result = '';
+  for (let item of halls) {
+      result += resultHall(item.name, item.numberSeats, item.faculty);
+  }
+  return result;
+};
+
+resultVw('4-1', showHalls(lectureHalls));
+
+
+
+// Task 4.2 Вывод на экран аудиторий для указанного факультета;
+
+const showFacultyHall = (arr, faculty) => {
+  let result = '';
+  for(item of arr) {
+      if(item.faculty === faculty)
+          result += resultHall(item.name, item.numberSeats);
+  }
+  return result;
+};
+
+resultVw('4-2', showFacultyHall(lectureHalls, 'Design'));
+
+
+// Task 4.3 Вывод на экран только тех аудиторий, которые подходят
+// для переданной группы. Объект-группа состоит из названия,
+// количества студентов и названия факультета;
+
+const group = {
+  name: 'FN13',
+  students: 13,
+  faculty: 'Marketing'
+};
+
+function checkGroup(groupObj, halls) {
+  let result = '';
+  for (item of halls) {
+      if (item.numberSeats >= groupObj.students && item.faculty === groupObj.faculty)
+          result += resultHall(item.name, item.numberSeats, item.faculty);
+  }
+  return result;
+}
+
+resultVw('4-3', checkGroup(group, lectureHalls));
+
+
+
+// Task 4.4 Функция сортировки аудиторий по количеству мест;
+
+function sortSeats(halls) {
+  let result = '';
+
+  const sort = halls.sort((a, b) => {
+      return a.numberSeats - b.numberSeats;
+  });
+  sort.reverse();
+
+  for (item of sort) {
+      result += resultHall(item.name, item.numberSeats, item.faculty);
+  }
+  return result;
+}
+
+resultVw('4-4', sortSeats(lectureHalls));
+
+
+
+// Task 4.5 Функция сортировки аудиторий по названию (по алфавиту).
+
+function sortName(halls) {
+  let result = '';
+
+  const sort = halls.sort((a, b) => {
+      let nameA = a.name.toLowerCase();
+      let nameB = b.name.toLowerCase();
+      if (nameA < nameB)
+          return -1
+      if (nameA > nameB)
+          return 1
+      return 0
+  });
+  // sort.reverse();
+
+  for (item of sort) {
+      result += resultHall(item.name, item.numberSeats, item.faculty);
+  }
+  return result;
+}
+
+resultVw('4-5', sortName(lectureHalls));
