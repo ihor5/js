@@ -4,48 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Lesson 29</title>
+    <title>Lesson 30</title>
 </head>
 <body>
 
-<h1>DOM DOM DOM</h1>
+<h1>EVENTS</h1>
 
 <div class="container">
-
     <div class="form-box">
         <h2>Task 1</h2>
-        <p>Список пісень.</p>
-        <button class="btn btn-show-songs" type="button">Показати</button>
-        <button class="btn btn-hide-songs hide" type="button">Сховати</button>
-        <div class="songs-list"></div>
+        <p><strong>[Cmd + E]</strong> - редагувати текст. <strong>[Cmd +]</strong> - завершити редагування.</p>
+        <div class="box">
+            <textarea class="editor-text hide" name="edit-text"></textarea>
+            <div class="result-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</div>
+        </div>
     </div>
 
     <div class="form-box">
         <h2>Task 2</h2>
-        <p>Popup.</p>
-        <button class="btn btn-show-songs" onclick="openPopup()" type="button">Відкрити</button>
+        <p>Щоб відсортувати натисність по заголовку колонки.</p>
+        <div class="box"></div>
+        <table>
+            <thead>
+                <tr class="sort-table">
+                    <th class="sort-name sort-h">Ім'я <span></span></th>
+                    <th class="sort-age sort-h">Вік <span></span></th>
+                    <th class="sort-department sort-h">Відділ <span></span></th>
+                </tr>
+            </thead>
+            <tbody class="table"></tbody>
+        </table>
     </div>
 
-    <div class="popup-bg"></div>
-    <div class="popup">
-        <div class="popup-close" onclick="openPopup()"></div>
-        <img src="img/photo-01.jpg" alt="Fiat 500">
-        <p>Popup text. More text in this popup...</p>
-    </div>
-
-    <div class="form-box">
+    <div class="form-box task3">
         <h2>Task 3</h2>
-        <p>Світлофор.</p>
-        <div class="traffic-box">
-            <div class="traffic-light">
-                <div class="light light--red"></div>
-                <div class="light light--yellow"></div>
-                <div class="light light--green"></div>
-            </div>
-            <button class="btn btn-show-songs" onclick="nextColor()" type="button">Next &#8594;</button>
+        <p>Змінити розмір блока можна потянувши за правий нижній кут.</p>
+        <div class="resize-table">
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
+            <div class="resize-btn"></div>
         </div>
     </div>
-
 </div>
 
 <script src="./src/index.js"></script>

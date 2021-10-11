@@ -1,124 +1,190 @@
 
-// Task 1. Создать страницу, которая выводит нумерованный список песен
+// Task 1. Создать HTML-страницу для отображения/редактирования текста.
+// При открытии страницы текст отображается с помощью тега div.
+// При нажатии Ctrl + E, вместо div появляется textarea с тем же текстом,
+// который теперь можно редактировать. При нажатии Ctrl + ,
+// вместо textarea появляется div с уже измененным текстом.
+// Не забудьте выключить поведение по умолчанию для этих сочетаний клавиш.
 
-let playList = [
-  {
-      author: "LED ZEPPELIN",
-      song: "STAIRWAY TO HEAVEN"
-  },
-  {
-      author: "QUEEN",
-      song: "BOHEMIAN RHAPSODY"
-  },
-  {
-      author: "LYNYRD SKYNYRD",
-      song: "FREE BIRD"
-  },
-  {
-      author: "DEEP PURPLE",
-      song: "SMOKE ON THE WATER"
-  },
-  {
-      author: "JIMI HENDRIX",
-      song: "ALL ALONG THE WATCHTOWER"
-  },
-  
-  {
-      author: "AC/DC",
-      song: "BACK IN BLACK"
-  },
-  
-  {
-      author: "QUEEN",
-      song: "WE WILL ROCK YOU"
-  },
-  {
-      author: "METALLICA",
-      song: "ENTER SANDMAN"
-  }    
+const resultText = document.querySelector('.result-text');
+const editorText = document.querySelector('.editor-text');
+
+window.addEventListener('keydown', event => {
+    if (event.code == 'KeyE' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        editorText.classList.remove('hide');
+        resultText.classList.add('hide');
+        editorText.innerText = resultText.innerText;
+    }
+
+    if (event.code == 'Equal' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        editorText.classList.add('hide');
+        resultText.classList.remove('hide');
+        resultText.innerText = editorText.value;
+    }
+});
+
+
+
+
+// Task 2. Создать HTML-страницу с большой таблицей.
+// При клике по заголовку колонки, необходимо отсортировать
+// данные по этой колонке. Учтите, что числовые значения
+// должны сортироваться как числа, а не как строки.
+
+const tableList = [
+    {
+        fullName: 'John Butler',
+        age: 30,
+        department: 'Marketing'
+    },
+    {
+        fullName: 'Emma Gray',
+        age: 24,
+        department: 'Design'
+    },
+    {
+        fullName: 'James Hart',
+        age: 34,
+        department: 'Management'
+    },
+    {
+        fullName: 'Lucas Hall',
+        age: 29,
+        department: 'Production'
+    },
+    {
+        fullName: 'Henry Brown',
+        age: 38,
+        department: 'Finance'
+    },
+    {
+        fullName: 'Olivia Baker',
+        age: 21,
+        department: 'Marketing'
+    },
 ];
 
-const showSongsList = arr => {
-  let list = '';
-
-  for(item of arr) {
-      list += `<div class="inline-box"><h3 class="h-inline">${item.author}</h3> - ${item.song}</div>`;
-  }
-
-  return list;
+function sortingText(list, field, reverse = false) {
+    const arr = list.sort((a, b) => {
+        let nameA = a[field].toLowerCase();
+        let nameB = b[field].toLowerCase();
+        if (nameA < nameB)
+            return -1
+        if (nameA > nameB)
+            return 1
+        return 0
+    });
+    
+    (reverse) ? arr.reverse() : arr;
 }
 
-const btnShowSongs = document.querySelector('.btn-show-songs');
-const btnHideSongs = document.querySelector('.btn-hide-songs');
-const songsList = document.querySelector('.songs-list');
+function sortingNumber(list, field, reverse = false) {
+    const arr = list.sort((a, b) => {
+        return a[field] - b[field];
+    });
 
-btnShowSongs.addEventListener('click', function() {
-  songsList.innerHTML = showSongsList(playList);
-  btnShowSongs.style.display = 'none';
-  btnHideSongs.style.display = 'block';
+    (reverse) ? arr.reverse() : arr;
+}
+
+function showTable(list) {
+    let table = '';
+
+    for(item of list) {
+        table += `<tr>
+                      <td>${item.fullName}</td>
+                      <td class="col-age">${item.age}</td>
+                      <td>${item.department}</td>
+                  </tr>`;
+    }
+
+    return table;
+}
+
+function checkSort (classSort, listSort, rowSort, type = 'text') {
+    const sort = document.querySelector(`.${classSort}`);
+    
+    // Видаляє всі стрілки перед тим як додати нову
+    const spanArrowAll = document.querySelectorAll(`.sort-h span`);
+    for (let i=0; i < spanArrowAll.length; i++) {
+        spanArrowAll[i].classList.remove('arrow');
+    }
+
+    if (type == 'text') {
+        if (sort.classList.contains('sort')) {
+            addArrow(type, listSort, rowSort, classSort, true, 180);
+        } else {
+            addArrow(type, listSort, rowSort, classSort);
+        }
+    } else {
+        if (sort.classList.contains('sort')) {
+            addArrow(type, listSort, rowSort, classSort, true, 180);
+        } else {
+            addArrow(type, listSort, rowSort, classSort);
+        }
+    }
+}
+
+function addArrow(type, list, row, classSort, reverse = false, deg = 0) {
+    const sort = document.querySelector(`.${classSort}`);
+    const spanArrow = document.querySelector(`.${classSort} span`);
+
+    if (type === 'text') {
+        sortingText(list, row, reverse);
+    } else {
+        sortingNumber(list, row, reverse);
+    }
+    
+    sort.classList.toggle('sort');
+    spanArrow.classList.add('arrow');
+    const arrow = document.querySelector(`.arrow`);
+    arrow.style.transform = `rotate(${deg}deg)`;
+}
+
+
+const table = document.querySelector('.table');
+table.innerHTML = showTable(tableList);
+
+
+
+const sortTable = document.querySelector('.sort-table');
+
+sortTable.addEventListener('click', event => {
+    const className = event.target.classList[0];
+
+    if (className === 'sort-department') {
+        checkSort('sort-department', tableList, 'department');
+    } else if (className === 'sort-age') {
+        checkSort('sort-age', tableList, 'age', 'number');
+    } else {
+        checkSort('sort-name', tableList, 'fullName');
+    }
+
+    table.innerHTML = showTable(tableList);
 });
 
-btnHideSongs.addEventListener('click', function() {
-  songsList.innerHTML = '';
-  btnShowSongs.style.display = 'block';
-  btnHideSongs.style.display = 'none';
+
+
+
+// Task 3. Создать HTML-страницу с блоком текста в рамочке.
+// Реализовать возможность изменять размер блока,
+// если зажать мышку в правом нижнем углу и тянуть ее дальше.
+
+const resizeTable = document.querySelector('.resize-table');
+const resizeBtn = document.querySelector('.resize-btn');
+
+function resize(event) {
+    resizeTable.style.width = event.clientX - resizeTable.getBoundingClientRect().left + 'px'
+    resizeTable.style.height = event.clientY - resizeTable.getBoundingClientRect().top + 'px'
+}
+
+function stopResize() {
+    document.removeEventListener('mousemove', resize)
+}
+
+resizeBtn.addEventListener('mousedown', () => {
+    document.addEventListener('mousemove', resize);
+    
 });
-
-
-
-// Task 2. Создать HTML-страницу с кнопкой "Открыть" и модальным окном.
-// На модальном окне должен быть текст и кнопка "Закрыть".
-// Изначально модальное окно не отображается.
-// При клике на кнопку "Открыть" появляется модальное окно,
-// на кнопку "Закрыть" – исчезает.
-
-// Відкриває вікно коли натиснута кнопка, openPopup визивається в html
-function openPopup() {
-  const popupBg = document.querySelector('.popup-bg');
-  const popup = document.querySelector('.popup');
-  popupBg.classList.toggle('visible');
-  popup.classList.toggle('visible');
-}
-
-// Закриває Popup якщо натиснути за межами Popup
-const closePopupBg = document.querySelector('.popup-bg');
-closePopupBg.addEventListener('click', function(event) {
-  const close = !event.target.closest('.popup');
-  if (close) {
-      openPopup();
-  }
-});
-
-
-
-// Task 3. Создать HTML-страницу со светофором и кнопкой,
-// которая переключает светофор на следующий цвет.
-
-function isColor(color) {
-  return color.classList.contains('active');
-}
-
-function addRemoveColor(firstColor, secondColor = 0) {
-  if(secondColor === 0) {
-      firstColor.classList.add('active');
-  } else {
-      firstColor.classList.remove('active');
-      secondColor.classList.add('active');
-  }
-}
-
-function nextColor() {
-
-  const trafficItems = document.querySelectorAll('.light');
-  const red = trafficItems[0], yellow = trafficItems[1], green = trafficItems[2];
-
-  if (!isColor(red) && !isColor(yellow) && !isColor(green))
-      addRemoveColor(red);
-  else if (isColor(red))
-      addRemoveColor(red, yellow);
-  else if (isColor(yellow))
-      addRemoveColor(yellow, green);
-  else
-      addRemoveColor(green, red);
-
-}
+document.addEventListener('mouseup', stopResize);
