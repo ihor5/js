@@ -4,48 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Lesson 30</title>
+    <title>Google Maps - Lesson 34</title>
 </head>
 <body>
 
-<h1>EVENTS</h1>
-
-<div class="container">
-    <div class="form-box">
-        <h2>Task 1</h2>
-        <p><strong>[Cmd + E]</strong> - редагувати текст. <strong>[Cmd +]</strong> - завершити редагування.</p>
-        <div class="box">
-            <textarea class="editor-text hide" name="edit-text"></textarea>
-            <div class="result-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</div>
-        </div>
-    </div>
-
-    <div class="form-box">
-        <h2>Task 2</h2>
-        <p>Щоб відсортувати натисність по заголовку колонки.</p>
-        <div class="box"></div>
-        <table>
-            <thead>
-                <tr class="sort-table">
-                    <th class="sort-name sort-h">Ім'я <span></span></th>
-                    <th class="sort-age sort-h">Вік <span></span></th>
-                    <th class="sort-department sort-h">Відділ <span></span></th>
-                </tr>
-            </thead>
-            <tbody class="table"></tbody>
-        </table>
-    </div>
-
-    <div class="form-box task3">
-        <h2>Task 3</h2>
-        <p>Змінити розмір блока можна потянувши за правий нижній кут.</p>
-        <div class="resize-table">
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
-            <div class="resize-btn"></div>
-        </div>
-    </div>
+<div class="search-form">
+    <!-- <img src="img/map.svg" alt="Map"> -->
+    <form name="form">
+        <input class="origin" type="text" name="origin" placeholder="Ivano-Frankivsk">
+        <input class="destination" type="text" name="destination" placeholder="Berlin">
+        <button>Прокласти маршрут</button>
+    </form>
 </div>
 
+<div id="map"></div>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACNyYkuj4eRHe0dQdASwwEXWLY68b_ZpM&libraries=places&callback=initMap"></script>
 <script src="./src/index.js"></script>
 </body>
 </html>
