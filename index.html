@@ -4,65 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Lesson 28</title>
+    <title>Lesson 29</title>
 </head>
 <body>
 
-<h1>Classes</h1>
+<h1>DOM DOM DOM</h1>
 
 <div class="container">
 
     <div class="form-box">
-        <h2>Task 1.2</h2>
-        <p>Радіус окружності.</p>
-        <button class="btn btn-show-radius" type="button">Показати</button>
-        <button class="btn btn-hide-radius hide" type="button">Сховати</button>
-        <div class="result-form12"></div>
+        <h2>Task 1</h2>
+        <p>Список пісень.</p>
+        <button class="btn btn-show-songs" type="button">Показати</button>
+        <button class="btn btn-hide-songs hide" type="button">Сховати</button>
+        <div class="songs-list"></div>
     </div>
 
     <div class="form-box">
-        <h2>Task 1.3</h2>
-        <p>Змінити радіус окружності.</p>
-        <form id="form13" name="form13">
-            <input type="text" name="radius" value="3">
-            <button type="submit">Змінити</button>
-        </form>
-        <div class="result-form13"></div>
+        <h2>Task 2</h2>
+        <p>Popup.</p>
+        <button class="btn btn-show-songs" onclick="openPopup()" type="button">Відкрити</button>
+    </div>
+
+    <div class="popup-bg"></div>
+    <div class="popup">
+        <div class="popup-close" onclick="openPopup()"></div>
+        <img src="img/photo-01.jpg" alt="Fiat 500">
+        <p>Popup text. More text in this popup...</p>
     </div>
 
     <div class="form-box">
-        <h2>Task 1.4 / 1.5 / 1.6</h2>
-        <p>Дані окружності.</p>
-        <div class="result-form14"></div>
-        <div class="result-form15"></div>
-        <div class="result-form16"></div>
-    </div>
-
-    <div class="form-box">
-        <h2>Task 2.2 / 2.3</h2>
-        <p>Написати текст маркером</p>
-        <form id="form2" name="form2">
-            <textarea name="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</textarea>
-            <button class="btn" type="submit">Написати</button>
-        </form>
-        <div class="result-form2"></div>
-        <div class="result-form21"></div>
-    </div>
-
-    <div class="form-box">
-        <h2>Task 2.4</h2>
-        <p>Заправити маркер</p>
-        <form id="form24" name="form24">
-            <input type="text" name="tank" value="23">
-            <button type="submit">Заправити</button>
-        </form>
-        <div class="result-form24"></div>
-    </div>
-
-    <div class="form-box">
-        <h2>Task 3.2</h2>
-        <p>Список працівників</p>
-        <div class="result-form32"></div>
+        <h2>Task 3</h2>
+        <p>Світлофор.</p>
+        <div class="traffic-box">
+            <div class="traffic-light">
+                <div class="light light--red"></div>
+                <div class="light light--yellow"></div>
+                <div class="light light--green"></div>
+            </div>
+            <button class="btn btn-show-songs" onclick="nextColor()" type="button">Next &#8594;</button>
+        </div>
     </div>
 
 </div>

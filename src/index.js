@@ -1,245 +1,124 @@
 
-function resultSel(task) {
-  return document.querySelector(`.result-form${task}`);
-}
+// Task 1. Создать страницу, которая выводит нумерованный список песен
 
-// Оновлює список
-function resultVw(desc, fn) {
-  return `<div class="inline-box">${desc}<h3 class="h-inline">${fn}</h3></div>`;
-}
-
-// Task 1. Реализовать класс, описывающий окружность.
-// Task 1.1 поле, хранящее радиус окружности;
-
-class Circle {
-  radius = 4;
-
-  get getRadius() {
-      return this.radius;
-  }
-
-  set setRadius(radius) {
-      this.radius = radius;
-  }
-
-  get getDiameter() {
-      return this.calcLength() / Math.PI;
-  }
-
-  // Не знаю чи нормально коли функція яка не get робить return?
-  calcArea() {
-      return Math.PI * (this.radius * this.radius);
-  }
-
-  calcLength() {
-      return 2 * Math.PI * this.radius;
-  }
-}
-
-const circle = new Circle();
-
-// circle.setRadius = 18;
-// console.log(circle.getRadius);
-// console.log(circle.calcArea());
-// console.log(circle.calcLength());
-// console.log(circle.getDiameter);
-
-
-
-// Task 1.2 get-свойство, возвращающее радиус окружности;
-
-const btnShowRadius = document.querySelector('.btn-show-radius');
-const btnHideRadius = document.querySelector('.btn-hide-radius');
-const result12 = resultSel(12);
-
-btnShowRadius.addEventListener('click', function() {
-  result12.innerHTML = resultVw('Радіус: ', circle.getRadius);
-  btnShowRadius.style.display = 'none';
-  btnHideRadius.style.display = 'block';
-});
-
-btnHideRadius.addEventListener('click', function() {
-  result12.innerHTML = '';
-  btnShowRadius.style.display = 'block';
-  btnHideRadius.style.display = 'none';
-});
-
-
-
-// Task 1.3 set-свойство, устанавливающее радиус окружности;
-
-form13.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const radius = form13.radius.value;
+let playList = [
+  {
+      author: "LED ZEPPELIN",
+      song: "STAIRWAY TO HEAVEN"
+  },
+  {
+      author: "QUEEN",
+      song: "BOHEMIAN RHAPSODY"
+  },
+  {
+      author: "LYNYRD SKYNYRD",
+      song: "FREE BIRD"
+  },
+  {
+      author: "DEEP PURPLE",
+      song: "SMOKE ON THE WATER"
+  },
+  {
+      author: "JIMI HENDRIX",
+      song: "ALL ALONG THE WATCHTOWER"
+  },
   
-  circle.setRadius = radius;
-
-  // Update data
-  result12.innerHTML = resultVw('Радіус: ', circle.getRadius);
-  result14.innerHTML = resultVw('Діаметр: ', circle.getDiameter);
-  result15.innerHTML = resultVw('Площа: ', circle.calcArea());
-  result16.innerHTML = resultVw('Довжина: ', circle.calcLength());
-});
-
-
-
-// Task 1.4 get-свойство, возвращающее диаметр окружности;
-const result14 = resultSel(14);
-result14.innerHTML = resultVw('Діаметр: ', circle.getDiameter);
-
-// Task 1.5 метод, вычисляющий площадь окружности;
-const result15 = resultSel(15);
-result15.innerHTML = resultVw('Площа: ', circle.calcArea());
-
-// Task 1.6 метод, вычисляющий длину окружности.
-const result16 = resultSel(16);
-result16.innerHTML = resultVw('Довжина: ', circle.calcLength());
-
-
-
-
-
-
-// Task 2. Реализовать класс, описывающий простой маркер.
-// Task 2.1 поле, которое хранит цвет маркера;
-// Task 2.2 поле, которое хранит количество чернил в маркере (в процентах);
-// Task 2.3 метод для печати (метод принимает строку и выводит текст соответствующим цветом; текст выводится до тех пор, пока в маркере есть чернила; один не пробельный символ – это 0,5% чернил в маркере).
-
-class Marker {
-  color = 'goldenrod';
-  tank = 13;
-
-  print(text) {
-      this.tankTmp = this.tank * 2;
-      this.result = '';
-
-      if(this.tank !== 0) {
-          // Виводить тільки танк символів кольором мінус пробіли
-          this.result += `<span style="color:${this.color}">`;
-          for(let i = 0; i < this.tankTmp && i < text.length; i++) {
-              if(text[i] === ' ') {
-                  this.tankTmp += 1;
-                  this.tank += .5;
-              }
-              this.result += text[i];
-              this.tank -= .5;
-          }
-          this.result += `</span>`;
-
-          // Виводить решту тексту звичайним кольором
-          for(let i = this.tankTmp; i < text.length; i++) {
-              this.result += text[i];
-          }
-      } else {
-          this.result += text;
-      }
-
-      // }
-
-      return this.result;
-  }
-}
-
-const marker = new Marker();
-// console.log(marker.print('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.'));
-// console.log(marker.tank);
-
-const result2 = resultSel(2);
-result2.innerHTML = resultVw('Маркер заправлено на ', marker.tank + '%');
-
-form2.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const text = form2.text.value;
+  {
+      author: "AC/DC",
+      song: "BACK IN BLACK"
+  },
   
-  const result21 = resultSel(21);
-  result21.innerHTML = resultVw('', marker.print(text));
-
-  // Update Tank
-  result2.innerHTML = resultVw('Маркер заправлено на ', marker.tank + '%');
-});
-
-
-
-// Task 2.4 Реализовать класс, описывающий заправляющийся маркер, унаследовав его от простого маркера и добавив метод для заправки маркера.
-
-class MarkerRefill extends Marker {
-  
-  refill(markerGas) {
-      this.tank += markerGas;
-      this.tank > 100 ? this.tank = 100 : this.tank;
-      return `Маркер заправлено на ${markerGas}%. Зараз він заправлений на ${this.tank}%`;
-  }
-
-}
-
-const markerRef = new MarkerRefill();
-
-
-const result24 = resultSel(24);
-result24.innerHTML = resultVw('Маркер заправлено на ', markerRef.tank + '%');
-
-form24.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const tankRefill = +form24.tank.value;
-  
-  markerRef.refill(tankRefill);
-
-  // Update Tank
-  result24.innerHTML = resultVw('Маркер заправлено на ', markerRef.tank + '%');
-});
-
-// console.log(markerRef.refill(83));
-// console.log(markerRef.print('Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.'));
-
-
-
-
-// Task 3. Реализовать класс Employee, описывающий работника, и создать массив работников банка.
-// Task 3.1 Реализовать класс EmpTable для генерации HTML-кода таблицы со списком работников банка. Массив работников необходимо передавать через конструктор, а получать HTML-код с помощью метода getHtml().
-// Task 3.2 Создать объект класса EmpTable и вывести на экран результат работы метода getHtml().
-
-class Employee {
-  
-  constructor(firstName, lastName, age, department) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.age = age;
-      this.department = department;
-  }
-
-}
-
-let employeesBank = [
-  new Employee('John', 'Butler', 30, 'Marketing'),
-  new Employee('Emma', 'Gray', 24, 'Design'),
-  new Employee('James', 'Hart', 34, 'Management'),
-  new Employee('Lucas', 'Hall', 29, 'Production'),
-  new Employee('Henry', 'Brown', 38, 'Finance'),
-  new Employee('Olivia', 'Baker', 21, 'Marketing'),
+  {
+      author: "QUEEN",
+      song: "WE WILL ROCK YOU"
+  },
+  {
+      author: "METALLICA",
+      song: "ENTER SANDMAN"
+  }    
 ];
 
-class EmpTable {
+const showSongsList = arr => {
+  let list = '';
 
-  constructor(employees) {
-      this.employees = employees;
+  for(item of arr) {
+      list += `<div class="inline-box"><h3 class="h-inline">${item.author}</h3> - ${item.song}</div>`;
   }
 
-  get getHtml() {
-      let result = ''
-      for(let item of this.employees) {
-          result += `<div class="inline-box"><h3 class="h-inline">
-                     ${item.firstName} ${item.lastName}</h3> ${item.age} years old.<br>
-                     Department: <h3 class="h-inline">${item.department}</h3></div><br>`;
-      }
-      return result;
-  }
-
+  return list;
 }
 
-const table = new EmpTable(employeesBank);
+const btnShowSongs = document.querySelector('.btn-show-songs');
+const btnHideSongs = document.querySelector('.btn-hide-songs');
+const songsList = document.querySelector('.songs-list');
 
-const result32 = resultSel(32);
-result32.innerHTML = table.getHtml;
+btnShowSongs.addEventListener('click', function() {
+  songsList.innerHTML = showSongsList(playList);
+  btnShowSongs.style.display = 'none';
+  btnHideSongs.style.display = 'block';
+});
+
+btnHideSongs.addEventListener('click', function() {
+  songsList.innerHTML = '';
+  btnShowSongs.style.display = 'block';
+  btnHideSongs.style.display = 'none';
+});
+
+
+
+// Task 2. Создать HTML-страницу с кнопкой "Открыть" и модальным окном.
+// На модальном окне должен быть текст и кнопка "Закрыть".
+// Изначально модальное окно не отображается.
+// При клике на кнопку "Открыть" появляется модальное окно,
+// на кнопку "Закрыть" – исчезает.
+
+// Відкриває вікно коли натиснута кнопка, openPopup визивається в html
+function openPopup() {
+  const popupBg = document.querySelector('.popup-bg');
+  const popup = document.querySelector('.popup');
+  popupBg.classList.toggle('visible');
+  popup.classList.toggle('visible');
+}
+
+// Закриває Popup якщо натиснути за межами Popup
+const closePopupBg = document.querySelector('.popup-bg');
+closePopupBg.addEventListener('click', function(event) {
+  const close = !event.target.closest('.popup');
+  if (close) {
+      openPopup();
+  }
+});
+
+
+
+// Task 3. Создать HTML-страницу со светофором и кнопкой,
+// которая переключает светофор на следующий цвет.
+
+function isColor(color) {
+  return color.classList.contains('active');
+}
+
+function addRemoveColor(firstColor, secondColor = 0) {
+  if(secondColor === 0) {
+      firstColor.classList.add('active');
+  } else {
+      firstColor.classList.remove('active');
+      secondColor.classList.add('active');
+  }
+}
+
+function nextColor() {
+
+  const trafficItems = document.querySelectorAll('.light');
+  const red = trafficItems[0], yellow = trafficItems[1], green = trafficItems[2];
+
+  if (!isColor(red) && !isColor(yellow) && !isColor(green))
+      addRemoveColor(red);
+  else if (isColor(red))
+      addRemoveColor(red, yellow);
+  else if (isColor(yellow))
+      addRemoveColor(yellow, green);
+  else
+      addRemoveColor(green, red);
+
+}
