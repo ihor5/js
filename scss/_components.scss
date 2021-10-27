@@ -1,0 +1,58 @@
+/* ================================================
+     TYPOGRAPHY
+   ================================================ */
+
+   %heading {
+    font-family: $font-primary;
+    font-weight: $font-weight;
+}
+
+.heading-1 {
+    @extend %heading;
+    font-size: $font-size + 16px;
+    font-weight: $font-weight;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: goldenrod;
+
+    a:link,
+    a:visited {
+        color: goldenrod;
+        text-decoration: none;
+    }
+}
+
+.heading-2 {
+    @extend %heading;
+    font-size: $font-size + 8px;
+    font-weight: $font-weight + 300;
+    letter-spacing: .3px;
+    color: rgba(#fff, .95);
+}
+
+.disabled {
+    opacity: .5;
+    cursor: inherit;
+
+    &:hover {
+        background-color: goldenrod;
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+}
+
+.error,
+.warning {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    font-size: $font-size + 2px;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    text-align: center;
+    color: goldenrod;
+}
