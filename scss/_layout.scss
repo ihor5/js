@@ -1,0 +1,219 @@
+.search-form {
+  position: relative;
+  margin: 0 auto 30px;
+  text-align: center;
+
+  &__logo {
+      width: auto;
+      height: 26px;
+      margin-right: 10px;
+  }
+
+  &__heading-1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+
+      a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+  }
+
+  &__form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  input {
+      max-width: 260px;
+  }
+
+  select {
+      max-width: 140px;
+  }
+
+  button {
+      width: 100px;
+  }
+}
+
+.details {
+  margin: 50px 0 30px;
+}
+
+.output {
+  display: grid;
+  grid-template-columns: repeat(4, 282px);
+  grid-gap: 14px;
+
+  &__found {
+      grid-column: 1 / -1;
+      margin: 0 0 15px;
+      font-size: $font-size + 6px;
+      font-weight: $font-weight - 100;
+      letter-spacing: 1px;
+      text-align: center;
+  }
+}
+
+
+.item {
+  position: relative;
+  cursor: pointer;
+
+  &:hover { 
+      .item__img {
+          opacity: .15;
+      }
+
+      .item__heading {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      .item__favorite {
+          display: block;
+          position: absolute;
+          top: 20px; right: 20px;
+          width: 28px;
+          height: 28px;
+          background: center/cover no-repeat url(../img/heart-empty.svg);
+          z-index: 30;
+
+          &--full {
+              background: center/cover no-repeat url(../img/heart.svg);
+          }
+      }
+  }
+
+  &__favorite {
+      display: none;
+  }
+
+  &__img {
+      width: 100%;
+      height: auto;
+      transition: all .3s;
+  }
+
+  &__heading {
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+      bottom: 50px; left: 50%;
+      transform: translate(-50%);
+      width: 100%;
+      padding: 0 10px;
+      font-size: $font-size + 2px;
+      text-align: center;
+      color: rgba(#fff, .8);
+      transition: all .3s;
+      color: goldenrod;
+  }
+}
+
+
+.details {
+  width: 70%;
+  margin: 65px auto;
+}
+
+.item-details {
+  display: flex;
+
+  &__desc {
+      margin-top: 30px;
+  }
+  
+  &__favorite {
+      display: inline-block;
+      position: relative;
+      top: 5px; left: 0;
+      margin-left: 8px;
+      width: 28px;
+      height: 28px;
+      background: center/cover no-repeat url(../img/heart-empty.svg);
+      cursor: pointer;
+
+      &--full {
+          background: center/cover no-repeat url(../img/heart.svg);
+      }
+  }   
+  
+  &__img {
+      margin-right: 30px;
+      max-width: 282px;
+      width: 100%;
+      transition: all .2s;
+  }
+
+  &__metadata,
+  &__synopsis,
+  &__starring {
+      margin-top: 16px;
+  }
+
+  &__metadata {
+      font-size: $font-size - 2px;
+      color: #a3a3a3;
+  }
+
+  &__synopsis {
+      line-height: 22px;
+      color: rgba(#fff, .95);
+  }
+
+  &__starring{
+      line-height: 22px;
+      color: #a3a3a3;
+
+      span {
+          margin-left: 5px;
+          color: rgba(#fff, .95);
+      }
+  }
+}
+
+
+.pagination {
+  margin-top: 90px;
+
+  &__more,
+  &__clear-btn {
+      display: none;
+      width: 150px;
+      margin: 0 auto;
+  }
+}
+
+
+.favorite {
+  position: absolute;
+  top: -9px; right: 75px;
+
+  &__btn {
+      height: 0;
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+      border-radius: 0;
+      color: rgba(#fff, .9);
+      cursor: pointer;
+      
+      &:hover {
+          background-color: inherit;
+          transform: translateY(0);
+          box-shadow: none;
+          color: rgba(#fff, .6);
+      }
+  
+      &:active {
+          transform: translateY(0);
+          box-shadow: none;
+      }
+  }
+}
