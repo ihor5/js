@@ -1,9 +1,4 @@
-@import "base";
-@import "components";
-@import "animation";
-@import "header";
-@import "projects";
-@import "news";
-@import "gallery";
-@import "contact";
-@import "footer";
+@import "base/reset";
+@import "base/base";
+@import "components/components";
+@import "pages/main";
